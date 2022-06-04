@@ -7,7 +7,7 @@ class Rebar():
         self.depth=40 # 최소 피복두께
         self.location="normal" # 철근 위치
         self.SectionArea="Normal" # 단면적 성능
-        self.D=22 # 철근 직경
+        self.diameter=22 # 철근 직경
         self.fck=28 # 철근 설계 강도
 
         self.ratio_min_condition()
@@ -61,7 +61,7 @@ class Rebar():
             pass
 
     def min_distance(self):
-        assert self.distance>=max(40,1.5*self.D)
+        assert self.distance>=max(40,1.5*self.diameter)
         print("최소순간격 만족")
         return True
 
@@ -82,18 +82,22 @@ class Rebar():
 class Stirrup():
     def __init__(self):
         self.diameter=12
-        self.distance=10
+        self.distance=30
         self.horizontal_support=True
 
         print("횡철근 직경은 {}로 상세설계 요구조건의 {} 이상이므로 최소직경 만족".format(self.diameter, self.max_diameter()))
     def max_diameter(self):
         func = lambda diameter : 13 if diameter>35 else (10 if diameter<32 else False)
         return func(self.diameter)
+    def min_distance(self):
+        min(Rebar.diameter*16,self.diameter*48)
+        # func = lambda diameter : 13 if diameter>35 else (10 if diameter<32 else False)
+        # return func(self.diameter)
+
 
 if __name__=="__main__":
     column=Rebar()
     stirrup1=Stirrup()
     # rebar_num = lambda x: print(x) if (x > 6) else print("no")
-    # rebar_num(5)
     # test = lambda a: True if (a > 10 and a < 20) else False
     # print(test(1))
